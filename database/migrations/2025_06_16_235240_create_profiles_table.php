@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tenant_id')->index();
+            $table->string('tenant_id')->index();
+            $table->string('name');
+            $table->string('profession')->nullable();
             $table->text('bio')->nullable();
             $table->string('photo_url')->nullable();
             $table->timestamps();

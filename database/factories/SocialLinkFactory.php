@@ -8,7 +8,7 @@ class SocialLinkFactory extends Factory
     public function definition(): array
     {
         return [
-            'tenant_id' => 1,
+            'tenant_id' => 'test',
             'platform' => fake()->randomElement(['t', 'f', 'l', 'i']),
             'url' => fake()->url(),
         ];

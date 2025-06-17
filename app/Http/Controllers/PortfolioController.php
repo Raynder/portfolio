@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Project;
+use App\Models\Profile;
+use App\Models\SocialLink;
 
 class PortfolioController extends Controller
 {
@@ -36,7 +39,10 @@ class PortfolioController extends Controller
     }
     public function index()
     {
-        
-        return view('portfolio.index');
+        $tenantId = tenant('id'); // Se estiver usando stancl/tenancy
+        $projetos = Project::where('tenant_id', $tenantId)->get();
+        $links = SocialLink::where('tenant_id', $tenantId)->get();
+        $profile = Profile::where('tenant_id', $tenantId)->first();
+        return view('portfolio.index', compact('projetos', 'links', 'profile'));
     }
 }

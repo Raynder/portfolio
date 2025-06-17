@@ -9,10 +9,10 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'tenant_id' => 1,
+            'tenant_id' => 'test',
             'title' => fake()->sentence(4),
             'description' => fake()->paragraph(),
-            'image_url' => asset('storage/images/' . collect(File::files(storage_path('app/public/projetos')))->random()->getFilename()),
+            'image_url' => asset('storage/projetos/' . collect(File::files(storage_path('app/public/projetos')))->random()->getFilename()),
             'published_at' => fake()->date(),
             'category' => fake()->randomElement(['Web Design    ', 'Mobile App', 'Graphic Design']),
             'comments_count' => fake()->numberBetween(0, 100),

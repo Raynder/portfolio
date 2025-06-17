@@ -58,6 +58,14 @@ chmod +x baixar_imagens_projetos.sh
 
 As imagens serão salvas em `storage/app/public/projetos`.
 
+## Tornando as imagens acessíveis via URL
+
+Para que as imagens salvas em `storage/app/public/projetos` possam ser exibidas no navegador, é necessário criar um link simbólico do diretório de storage para o diretório público do Laravel. Execute:
+
+```bash
+php artisan storage:link
+```
+
 ## Estrutura de Pastas
 
 - `app/Http/Controllers/Auth/RegisteredUserController.php`: Lógica de registro e criação de tenant

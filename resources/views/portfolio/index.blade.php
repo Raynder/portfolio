@@ -68,40 +68,43 @@
         <div class="sidebar bg-white w-full md:w-1/4 lg:w-1/5 xl:w-1/6 p-6 flex flex-col items-center fixed h-screen">
             <!-- Profile Picture -->
             <div class="profile-pic w-32 h-32 rounded-full overflow-hidden mb-6">
-                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
-                     alt="Kate Glover" class="w-full h-full object-cover">
+                <img src="{{ $profile?->photo_url ?? 'https://via.placeholder.com/150' }}" 
+                     alt="{{ $profile?->name ?? 'Profile' }}" class="w-full h-full object-cover">
             </div>
             
             <!-- Name -->
-            <h1 class="text-2xl font-bold text-gray-800 mb-2">Kate Glover</h1>
+            <h1 class="text-center text-2xl font-bold text-gray-800 mb-2">{{ $profile?->name ?? 'Nome do Usuário' }}</h1>
             
             <!-- Title -->
-            <p class="text-blue-900 font-medium mb-6">Freelance Web Designer & Developer</p>
+            <p class="text-center text-blue-900 font-medium mb-6">{{ $profile?->profession ?? 'Título Profissional' }}</p>
             
             <!-- Bio -->
             <p class="text-gray-600 text-center mb-8">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+                {{ $profile?->bio ?? 'Adicione uma bio para seu perfil.' }}
             </p>
             
             <!-- Social Icons -->
             <div class="flex space-x-3 mb-8">
-                <a href="#" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="#" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="#" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition">
-                    <i class="fab fa-instagram"></i>
-                </a>
+                @foreach($links as $link)
+                    <a href="{{ $link->url }}" target="_blank" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition">
+                        @if(str_contains($link->platform, 'twitter'))
+                            <i class="fab fa-twitter"></i>
+                        @elseif(str_contains($link->platform, 'facebook'))
+                            <i class="fab fa-facebook-f"></i>
+                        @elseif(str_contains($link->platform, 'linkedin'))
+                            <i class="fab fa-linkedin-in"></i>
+                        @elseif(str_contains($link->platform, 'instagram'))
+                            <i class="fab fa-instagram"></i>
+                        @else
+                            <i class="fas fa-link"></i>
+                        @endif
+                    </a>
+                @endforeach
             </div>
             
             <!-- Hire Me Button -->
             <button class="w-full bg-blue-900 text-white py-3 rounded-lg font-medium hover:bg-blue-800 transition mb-6">
-                Hire Me
+                Contatar
             </button>
             
             <!-- Copyright -->
@@ -229,61 +232,27 @@
             <div class="container mx-auto p-6 md:p-12">
                 <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-8 text-center">Recent Projects</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Project 1 -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                             alt="Project 1" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-blue-900 mb-2">E-commerce Website</h3>
-                            <div class="flex items-center text-gray-500 mb-4">
-                                <i class="fas fa-tag mr-2"></i> Web Development
+                    @forelse($projetos as $projeto)
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                            <img src="{{ $projeto->image_url ?? 'https://via.placeholder.com/400x200' }}" 
+                                 alt="{{ $projeto->title }}" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-blue-900 mb-2">{{ $projeto->title }}</h3>
+                                <div class="flex items-center text-gray-500 mb-4">
+                                    <i class="fas fa-tag mr-2"></i> {{ $projeto->category ?? 'Categoria' }}
+                                </div>
+                                <p class="text-gray-600 mb-4">
+                                    {{ $projeto->description }}
+                                </p>
+                                <button class="text-blue-900 font-medium hover:text-blue-700 transition">
+                                    View Details <i class="fas fa-arrow-right ml-1"></i>
+                                </button>
                             </div>
-                            <p class="text-gray-600 mb-4">
-                                A fully responsive e-commerce platform with payment integration.
-                            </p>
-                            <button class="text-blue-900 font-medium hover:text-blue-700 transition">
-                                View Details <i class="fas fa-arrow-right ml-1"></i>
-                            </button>
                         </div>
-                    </div>
-                    
-                    <!-- Project 2 -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-                        <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                             alt="Project 2" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-blue-900 mb-2">Mobile App UI</h3>
-                            <div class="flex items-center text-gray-500 mb-4">
-                                <i class="fas fa-tag mr-2"></i> UI/UX Design
-                            </div>
-                            <p class="text-gray-600 mb-4">
-                                Modern and intuitive mobile application interface design.
-                            </p>
-                            <button class="text-blue-900 font-medium hover:text-blue-700 transition">
-                                View Details <i class="fas fa-arrow-right ml-1"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Project 3 -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-                        <img src="https://images.unsplash.com/photo-1541462608143-67571c6738dd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                             alt="Project 3" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-blue-900 mb-2">Corporate Branding</h3>
-                            <div class="flex items-center text-gray-500 mb-4">
-                                <i class="fas fa-tag mr-2"></i> Brand Identity
-                            </div>
-                            <p class="text-gray-600 mb-4">
-                                Complete branding package including logo and style guide.
-                            </p>
-                            <button class="text-blue-900 font-medium hover:text-blue-700 transition">
-                                View Details <i class="fas fa-arrow-right ml-1"></i>
-                            </button>
-                        </div>
-                    </div>
+                    @empty
+                        <div class="col-span-3 text-center text-gray-500">Nenhum projeto cadastrado.</div>
+                    @endforelse
                 </div>
-                
                 <div class="text-center mt-10">
                     <button class="border-2 border-blue-900 text-blue-900 px-6 py-2 rounded font-medium hover:bg-blue-900 hover:text-white transition">
                         View All Projects

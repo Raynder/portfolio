@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void {
         Schema::create('social_links', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tenant_id')->index();
+            $table->string('tenant_id')->index();
             $table->string('platform', 1); // ex: twitter, linkedin
             $table->string('url');
             $table->timestamps();

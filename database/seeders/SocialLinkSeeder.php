@@ -8,6 +8,6 @@ class SocialLinkSeeder extends Seeder
 {
     public function run(): void
     {
-        SocialLink::factory()->count(30)->create();
+        SocialLink::factory()->count(3)->create();
     }
 }

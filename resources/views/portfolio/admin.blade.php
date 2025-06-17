@@ -191,65 +191,55 @@
                 <div id="social-form" class="section-form hidden">
                     <div class="bg-white rounded-lg shadow p-6 mb-6">
                         <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-lg font-semibold">Adicionar Link Social</h3>
-                            <button class="bg-blue-800 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-                                <i class="fas fa-plus mr-2"></i> Adicionar Link
+                            <h3 class="text-lg font-semibold">Adicionar/Editar Rede Social</h3>
+                            <button class="bg-blue-800 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition" onclick="limparFormularioSocial()">
+                                <i class="fas fa-plus mr-2"></i> Nova Rede
                             </button>
                         </div>
-                        
-                        <div class="space-y-4">
-                            <!-- Social Link Creation Form -->
-                            <div class="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label class="form-label">Plataforma</label>
-                                        <select class="form-input">
-                                            <option value="">Selecione a Plataforma</option>
-                                            <option value="facebook">Facebook</option>
-                                            <option value="twitter">Twitter</option>
-                                            <option value="linkedin">LinkedIn</option>
-                                            <option value="instagram">Instagram</option>
-                                            <option value="github">GitHub</option>
-                                        </select>
+                        <form id="form-social">
+                            <input type="hidden" id="social_id">
+                            <div class="space-y-6">
+                                <div class="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label class="form-label">Plataforma</label>
+                                            <select class="form-input" id="social_platform">
+                                                <option value="">Selecione</option>
+                                                <option value="f">Facebook</option>
+                                                <option value="t">Twitter</option>
+                                                <option value="l">LinkedIn</option>
+                                                <option value="i">Instagram</option>
+                                                <option value="g">GitHub</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">URL</label>
+                                            <input type="url" class="form-input" id="social_url" placeholder="https://example.com/profile">
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label class="form-label">URL</label>
-                                        <input type="url" class="form-input" placeholder="https://example.com/profile">
+                                    <div class="mt-4 flex justify-end space-x-3">
+                                        <button id="btn-social-atualizar" type="button" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition hidden" onclick="atualizarSocial(event)">
+                                            <i class="fas fa-sync-alt mr-2"></i> Atualizar
+                                        </button>
+                                        <button id="btn-social-salvar" type="button" class="bg-blue-800 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition" onclick="salvarSocial(event)">
+                                            <i class="fas fa-save mr-2"></i> Salvar
+                                        </button>
                                     </div>
-                                </div>
-                                <div class="mt-4 flex justify-end">
-                                    <button class="text-red-600 hover:text-red-800">
-                                        <i class="fas fa-trash"></i> Deletar
-                                    </button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="bg-white rounded-lg shadow p-6">
                         <h3 class="text-lg font-semibold mb-6">Suas Redes Sociais</h3>
                         <div class="space-y-4">
                             @forelse($links as $link)
-                                <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+                                <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between cursor-pointer" onclick="carregarSocial({{ $link->id }})">
                                     <div class="flex items-center">
-                                        @if(str_contains(strtolower($link->platform), 'twitter'))
-                                            <i class="fab fa-twitter text-blue-400 text-xl mr-4"></i>
-                                        @elseif(str_contains(strtolower($link->platform), 'linkedin'))
-                                            <i class="fab fa-linkedin text-blue-600 text-xl mr-4"></i>
-                                        @elseif(str_contains(strtolower($link->platform), 'github'))
-                                            <i class="fab fa-github text-gray-800 text-xl mr-4"></i>
-                                        @elseif(str_contains(strtolower($link->platform), 'facebook'))
-                                            <i class="fab fa-facebook-f text-blue-600 text-xl mr-4"></i>
-                                        @elseif(str_contains(strtolower($link->platform), 'instagram'))
-                                            <i class="fab fa-instagram text-pink-500 text-xl mr-4"></i>
-                                        @else
-                                            <i class="fas fa-link text-gray-600 text-xl mr-4"></i>
-                                        @endif
-                                        <div>
-                                            <h4 class="font-medium">{{ ucfirst($link->platform) }}</h4>
-                                            <p class="text-sm text-gray-600">{{ $link->url }}</p>
-                                        </div>
+                                        @php $nomeSocial = \App\Helpers\SocialHelper::get($link->platform); @endphp
+                                        <span class="font-bold text-blue-900 mr-2">{{ $nomeSocial }}</span>
+                                        <span class="text-gray-600">{{ $link->url }}</span>
                                     </div>
-                                    <button class="text-red-600 hover:text-red-800">
+                                    <button class="text-red-600 hover:text-red-800 ml-4" onclick="event.stopPropagation(); deletarSocial({{ $link->id }})">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -363,8 +353,103 @@
         }
 
         function salvarProjeto(e) {
-            // Implemente aqui se desejar criar novos projetos via AJAX
-            // Por padrão, o botão Salvar pode submeter o form normalmente
+            e.preventDefault();
+            fetch('/projetos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    title: document.getElementById('projeto_titulo').value,
+                    category: document.getElementById('projeto_categoria').value,
+                    image_url: document.getElementById('projeto_imagem').value,
+                    comments_count: document.getElementById('projeto_comentarios').value,
+                    description: document.getElementById('projeto_descricao').value,
+                    published_at: document.getElementById('projeto_data').value,
+                    is_featured: document.getElementById('featured-toggle').checked ? 1 : 0
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) location.reload();
+                else alert('Erro ao salvar projeto.');
+            });
+        }
+
+        function deletarSocial(id) {
+            if (!confirm('Tem certeza que deseja deletar este link?')) return;
+            fetch(`/social/${id}`, {
+                method: 'DELETE',
+                headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) location.reload();
+                else alert('Erro ao deletar link.');
+            });
+        }
+
+        function carregarSocial(id) {
+            fetch(`/social/${id}`)
+            .then(res => res.json())
+            .then(link => {
+                document.getElementById('social_id').value = link.id;
+                document.getElementById('social_platform').value = link.platform;
+                document.getElementById('social_url').value = link.url;
+                document.getElementById('btn-social-atualizar').classList.remove('hidden');
+                document.getElementById('btn-social-salvar').classList.add('hidden');
+            });
+        }
+
+        function atualizarSocial(e) {
+            e.preventDefault();
+            const id = document.getElementById('social_id').value;
+            fetch(`/social/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    site: document.getElementById('social_platform').value,
+                    url: document.getElementById('social_url').value
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) location.reload();
+                else alert('Erro ao atualizar link.');
+            });
+        }
+
+        function salvarSocial(e) {
+            e.preventDefault();
+            fetch('/social', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    site: document.getElementById('social_platform').value,
+                    url: document.getElementById('social_url').value
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) location.reload();
+                else alert('Erro ao salvar link.');
+            });
+        }
+
+        // Corrige toggle destaque para funcionar ao clicar no label
+        const featuredToggle = document.getElementById('featured-toggle');
+        const featuredLabel = document.querySelector('label[for="featured-toggle"]');
+        if (featuredToggle && featuredLabel) {
+            featuredLabel.addEventListener('click', function() {
+                featuredToggle.checked = !featuredToggle.checked;
+            });
         }
 
         function limparFormularioProjeto() {
@@ -378,6 +463,14 @@
             document.getElementById('featured-toggle').checked = false;
             document.getElementById('btn-atualizar').classList.add('hidden');
             document.getElementById('btn-salvar').classList.remove('hidden');
+        }
+
+        function limparFormularioSocial() {
+            document.getElementById('social_id').value = '';
+            document.getElementById('social_platform').value = '';
+            document.getElementById('social_url').value = '';
+            document.getElementById('btn-social-atualizar').classList.add('hidden');
+            document.getElementById('btn-social-salvar').classList.remove('hidden');
         }
     </script>
 </body>

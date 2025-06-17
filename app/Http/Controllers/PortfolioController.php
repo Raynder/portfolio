@@ -88,4 +88,67 @@ class PortfolioController extends Controller
         $project->update($data);
         return response()->json(['success' => true, 'project' => $project]);
     }
+
+    // Criar novo projeto
+    public function storeProject(Request $request)
+    {
+        $user = auth()->user();
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'nullable|string|max:255',
+            'image_url' => 'nullable|string|max:255',
+            'comments_count' => 'nullable|integer',
+            'description' => 'nullable|string',
+            'published_at' => 'nullable|date',
+            'is_featured' => 'nullable|boolean',
+        ]);
+        $data['tenant_id'] = $user->dominio;
+        $project = Project::create($data);
+        return response()->json(['success' => true, 'project' => $project]);
+    }
+
+    // CRUD Social Links
+    public function destroySocial($id)
+    {
+        $link = SocialLink::findOrFail($id);
+        $link->delete();
+        return response()->json(['success' => true]);
+    }
+
+    public function getSocial($id)
+    {
+        $link = SocialLink::findOrFail($id);
+        return response()->json($link);
+    }
+
+    public function updateSocial(Request $request, $id)
+    {
+        $link = SocialLink::findOrFail($id);
+        $data = $request->all();
+        // Permite aceitar tanto 'site' quanto 'platform' como nome do campo
+        $data['platform'] = $data['site'] ?? $data['platform'] ?? null;
+        $validated = validator($data, [
+            'platform' => 'required|string|max:1',
+            'url' => 'required|string|max:255',
+            'icon' => 'nullable|string|max:255',
+        ])->validate();
+        $link->update($validated);
+        return response()->json(['success' => true, 'link' => $link]);
+    }
+
+    public function storeSocial(Request $request)
+    {
+        $user = auth()->user();
+        $data = $request->all();
+        // Permite aceitar tanto 'site' quanto 'platform' como nome do campo
+        $data['platform'] = $data['site'] ?? $data['platform'] ?? null;
+        $validated = validator($data, [
+            'platform' => 'required|string|max:1',
+            'url' => 'required|string|max:255',
+            'icon' => 'nullable|string|max:255',
+        ])->validate();
+        $validated['tenant_id'] = $user->dominio;
+        $link = SocialLink::create($validated);
+        return response()->json(['success' => true, 'link' => $link]);
+    }
 }

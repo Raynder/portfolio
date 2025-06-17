@@ -119,9 +119,9 @@
             <nav class="bg-blue-900 text-gray-300 p-4">
                 <div class="container mx-auto flex justify-between items-center">
                     <ul class="hidden md:flex space-x-8">
-                        <li><a href="#" class="active-nav hover:text-white">Home</a></li>
-                        <li><a href="#" class="hover:text-white">About</a></li>
-                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                        <li><a href="#" class="active-nav hover:text-white">Inicio</a></li>
+                        <li><a href="#" class="hover:text-white">Sobre</a></li>
+                        <li><a href="#" class="hover:text-white">Contato</a></li>
                     </ul>
                     
                     {{--
@@ -140,54 +140,44 @@
             <!-- Hero Carousel -->
             <div class="relative overflow-hidden">
                 <!-- Carousel Items -->
-                <div class="carousel-item active">
-                    <div class="bg-blue-900 text-white p-12 md:p-20">
-                        <div class="container mx-auto">
-                            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Lorem ipsum dolor sit amet</h2>
-                            <div class="flex flex-wrap items-center gap-4 mb-8">
-                                <span class="flex items-center"><i class="far fa-calendar-alt mr-2"></i> 01-Jan-2045</span>
-                                <span class="flex items-center"><i class="fas fa-tag mr-2"></i> Web Design</span>
-                                <span class="flex items-center"><i class="far fa-comments mr-2"></i> 15 Comments</span>
+                @php
+                    $featuredProjects = $projetos->where('is_featured', true)->values();
+                @endphp
+                @forelse($featuredProjects as $index => $projeto)
+                    <div class="carousel-item {{ $index === 0 ? 'active' : 'hidden' }} relative" style="background: url('{{ $projeto->image_url }}') center center / cover no-repeat; min-height: 350px;">
+                        <div class="absolute inset-0 bg-blue-900" style="opacity: 0.4;"></div>
+                        <div class="relative z-10 text-white p-12 md:p-20 h-full w-full">
+                            <div class="container mx-auto">
+                                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{{ $projeto->title }}</h2>
+                                <div class="flex flex-wrap items-center gap-4 mb-8">
+                                    <span class="flex items-center">
+                                        <i class="far fa-calendar-alt mr-2"></i>
+                                        {{ $projeto->published_at ? \Carbon\Carbon::parse($projeto->published_at)->format('d-M-Y') : '' }}
+                                    </span>
+                                    <span class="flex items-center">
+                                        <i class="fas fa-tag mr-2"></i>
+                                        {{ $projeto->category ?? 'Categoria' }}
+                                    </span>
+                                    <span class="flex items-center">
+                                        <i class="far fa-comments mr-2"></i>
+                                        {{ $projeto->comments_count ?? 0 }} Comentários
+                                    </span>
+                                </div>
+                                <button class="border-2 border-white px-6 py-2 rounded hover:bg-white hover:text-blue-900 transition">
+                                    Ver Projeto
+                                </button>
                             </div>
-                            <button class="border-2 border-white px-6 py-2 rounded hover:bg-white hover:text-blue-900 transition">
-                                Read More
-                            </button>
                         </div>
                     </div>
-                </div>
-                
-                <div class="carousel-item hidden">
-                    <div class="bg-gray-800 text-white p-12 md:p-20">
-                        <div class="container mx-auto">
-                            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Consectetur adipiscing elit</h2>
-                            <div class="flex flex-wrap items-center gap-4 mb-8">
-                                <span class="flex items-center"><i class="far fa-calendar-alt mr-2"></i> 15-Feb-2045</span>
-                                <span class="flex items-center"><i class="fas fa-tag mr-2"></i> UI/UX Design</span>
-                                <span class="flex items-center"><i class="far fa-comments mr-2"></i> 8 Comments</span>
+                @empty
+                    <div class="carousel-item active">
+                        <div class="bg-blue-900 text-white p-12 md:p-20">
+                            <div class="container mx-auto">
+                                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Nenhum projeto em destaque</h2>
                             </div>
-                            <button class="border-2 border-white px-6 py-2 rounded hover:bg-white hover:text-gray-800 transition">
-                                Read More
-                            </button>
                         </div>
                     </div>
-                </div>
-                
-                <div class="carousel-item hidden">
-                    <div class="bg-blue-700 text-white p-12 md:p-20">
-                        <div class="container mx-auto">
-                            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Sed do eiusmod tempor</h2>
-                            <div class="flex flex-wrap items-center gap-4 mb-8">
-                                <span class="flex items-center"><i class="far fa-calendar-alt mr-2"></i> 30-Mar-2045</span>
-                                <span class="flex items-center"><i class="fas fa-tag mr-2"></i> Frontend Development</span>
-                                <span class="flex items-center"><i class="far fa-comments mr-2"></i> 22 Comments</span>
-                            </div>
-                            <button class="border-2 border-white px-6 py-2 rounded hover:bg-white hover:text-blue-700 transition">
-                                Read More
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
+                @endforelse
                 <!-- Carousel Controls -->
                 <button class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 text-white p-2 rounded-full hover:bg-opacity-50 transition" onclick="prevSlide()">
                     <i class="fas fa-chevron-left"></i>
@@ -195,7 +185,6 @@
                 <button class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 text-white p-2 rounded-full hover:bg-opacity-50 transition" onclick="nextSlide()">
                     <i class="fas fa-chevron-right"></i>
                 </button>
-                
                 <!-- Carousel Indicators -->
                 <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
                     <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition" onclick="goToSlide(0)"></button>
@@ -205,32 +194,47 @@
             </div>
             
             <!-- Featured Project -->
+            @php
+                $ultimoProjeto = $projetos->sortByDesc('published_at')->first();
+            @endphp
+
+            @if($ultimoProjeto)
             <div class="container mx-auto p-6 md:p-12">
                 <div class="flex flex-col md:flex-row gap-8 bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="md:w-1/2">
-                        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                             alt="Featured Project" class="w-full h-full object-cover">
+                        <img src="{{ $ultimoProjeto->image_url ?? 'https://via.placeholder.com/800x400' }}" 
+                             alt="{{ $ultimoProjeto->title }}" class="w-full h-full object-cover">
                     </div>
                     <div class="md:w-1/2 p-6 md:p-8">
-                        <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-4">Latest Web Design Project</h2>
+                        <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-4">{{ $ultimoProjeto->title }}</h2>
                         <div class="flex flex-wrap items-center gap-4 mb-6 text-gray-600">
-                            <span class="flex items-center"><i class="far fa-calendar-alt mr-2"></i> 10-Jul-2045</span>
-                            <span class="flex items-center"><i class="fas fa-tag mr-2"></i> Portfolio Design</span>
-                            <span class="flex items-center"><i class="far fa-comments mr-2"></i> 5 Comments</span>
+                            <span class="flex items-center">
+                                <i class="far fa-calendar-alt mr-2"></i>
+                                {{ $ultimoProjeto->published_at ? \Carbon\Carbon::parse($ultimoProjeto->published_at)->format('d/m/Y') : '' }}
+                            </span>
+                            <span class="flex items-center">
+                                <i class="fas fa-tag mr-2"></i>
+                                {{ $ultimoProjeto->category ?? 'Categoria' }}
+                            </span>
+                            <span class="flex items-center">
+                                <i class="far fa-comments mr-2"></i>
+                                {{ $ultimoProjeto->comments_count ?? 0 }} Comentários
+                            </span>
                         </div>
                         <p class="text-gray-600 mb-6">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            {{ $ultimoProjeto->description }}
                         </p>
                         <button class="bg-blue-900 text-white px-6 py-2 rounded hover:bg-blue-800 transition">
-                            View Project
+                            Ver Projeto
                         </button>
                     </div>
                 </div>
             </div>
+            @endif
             
             <!-- Recent Projects Grid -->
             <div class="container mx-auto p-6 md:p-12">
-                <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-8 text-center">Recent Projects</h2>
+                <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-8 text-center">Ultimos Publicados</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @forelse($projetos as $projeto)
                         <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">

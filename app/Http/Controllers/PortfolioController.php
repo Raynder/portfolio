@@ -45,4 +45,47 @@ class PortfolioController extends Controller
         $profile = Profile::where('tenant_id', $tenantId)->first();
         return view('portfolio.index', compact('projetos', 'links', 'profile'));
     }
+    public function admin()
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+        $user = auth()->user();
+        $projetos = Project::where('tenant_id', $user->dominio)->get();
+        $links = SocialLink::where('tenant_id', $user->dominio)->get();
+        $profile = Profile::where('tenant_id', $user->dominio)->first();
+        return view('portfolio.admin', compact('projetos', 'links', 'profile', 'user'));
+    }
+
+    // Deletar projeto
+    public function destroyProject($id)
+    {
+        $project = Project::findOrFail($id);
+        $project->delete();
+        return response()->json(['success' => true]);
+    }
+
+    // Buscar dados do projeto
+    public function getProject($id)
+    {
+        $project = Project::findOrFail($id);
+        return response()->json($project);
+    }
+
+    // Atualizar projeto
+    public function updateProject(Request $request, $id)
+    {
+        $project = Project::findOrFail($id);
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'nullable|string|max:255',
+            'image_url' => 'nullable|string|max:255',
+            'comments_count' => 'nullable|integer',
+            'description' => 'nullable|string',
+            'published_at' => 'nullable|date',
+            'is_featured' => 'nullable|boolean',
+        ]);
+        $project->update($data);
+        return response()->json(['success' => true, 'project' => $project]);
+    }
 }

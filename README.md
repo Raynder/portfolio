@@ -35,9 +35,9 @@ PortfolioPro é uma aplicação multi-tenant desenvolvida em Laravel, que permit
    php artisan key:generate
    ```
 4. Configure o banco de dados central e as credenciais no `.env`.
-5. Execute as migrations do banco central:
+5. Execute as migrations e popule o banco com seeders:
    ```bash
-   php artisan migrate
+   php artisan migrate:fresh --seed
    ```
 6. (Opcional) Configure hosts locais para domínios de tenants.
 
@@ -47,12 +47,24 @@ PortfolioPro é uma aplicação multi-tenant desenvolvida em Laravel, que permit
 - O banco de dados do tenant é criado e as migrations são executadas automaticamente.
 - Cada tenant possui dados isolados dos demais.
 
+## Baixando imagens de exemplo para projetos
+
+Para popular a pasta de projetos com imagens de exemplo, execute o script abaixo:
+
+```bash
+chmod +x baixar_imagens_projetos.sh
+./baixar_imagens_projetos.sh
+```
+
+As imagens serão salvas em `storage/app/public/projetos`.
+
 ## Estrutura de Pastas
 
 - `app/Http/Controllers/Auth/RegisteredUserController.php`: Lógica de registro e criação de tenant
 - `routes/web.php`: Rotas principais
 - `resources/views/auth/register.blade.php`: Tela de cadastro
 - `config/tenancy.php`: Configurações do multi-tenancy
+- `baixar_imagens_projetos.sh`: Script para baixar imagens de exemplo
 
 ## Contribuição
 

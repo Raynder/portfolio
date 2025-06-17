@@ -151,4 +151,27 @@ class PortfolioController extends Controller
         $link = SocialLink::create($validated);
         return response()->json(['success' => true, 'link' => $link]);
     }
+
+    // Atualizar perfil
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+        $profile = \App\Models\Profile::where('tenant_id', $user->dominio)->first();
+        if (!$profile) {
+            $profile = new \App\Models\Profile();
+            $profile->tenant_id = $user->dominio;
+        }
+        $data = $request->validate([
+            'photo_url' => 'nullable|string|max:255',
+            'name' => 'required|string|max:255',
+            'profession' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:30',
+            'address' => 'nullable|string|max:255',
+            'bio' => 'nullable|string',
+        ]);
+        $profile->fill($data);
+        $profile->save();
+        return response()->json(['success' => true, 'profile' => $profile]);
+    }
 }

@@ -56,9 +56,6 @@
             <header class="bg-white shadow-sm p-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-semibold text-gray-800" id="section-title">Configurações do Perfil</h2>
-                    <button class="bg-blue-800 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-                        <i class="fas fa-save mr-2"></i> Salvar Alterações
-                    </button>
                 </div>
             </header>
 
@@ -66,36 +63,43 @@
                 <!-- Profile Form -->
                 <div id="profile-form" class="section-form">
                     <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <form id="form-perfil">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="form-label font-bold text-blue-900 uppercase tracking-wide">Foto de Perfil</label>
-                                <input type="text" class="form-input text-gray-500 font-normal bg-gray-50" value="{{ $profile->photo_url ?? '' }}" placeholder="https://example.com/photo.jpg">
+                                <input type="text" class="form-input text-gray-500 font-normal bg-gray-50" id="profile_photo_url" value="{{ $profile->photo_url ?? '' }}" placeholder="https://example.com/photo.jpg">
                             </div>
                             <div>
                                 <label class="form-label font-bold text-blue-900 uppercase tracking-wide">Nome</label>
-                                <input type="text" class="form-input text-gray-500 font-normal bg-gray-50" value="{{ $profile->name ?? '' }}" placeholder="Nome completo">
+                                <input type="text" class="form-input text-gray-500 font-normal bg-gray-50" id="profile_name" value="{{ $profile->name ?? '' }}" placeholder="Nome completo">
                             </div>
                             <div>
                                 <label class="form-label font-bold text-blue-900 uppercase tracking-wide">Profissão</label>
-                                <input type="text" class="form-input text-gray-500 font-normal bg-gray-50" value="{{ $profile->profession ?? '' }}" placeholder="Profissão">
+                                <input type="text" class="form-input text-gray-500 font-normal bg-gray-50" id="profile_profession" value="{{ $profile->profession ?? '' }}" placeholder="Profissão">
                             </div>
                             <div>
                                 <label class="form-label font-bold text-blue-900 uppercase tracking-wide">Email</label>
-                                <input type="email" class="form-input text-gray-500 font-normal bg-gray-50" value="{{ $profile->email ?? '' }}" placeholder="email@exemplo.com">
+                                <input type="email" class="form-input text-gray-500 font-normal bg-gray-50" id="profile_email" value="{{ $profile->email ?? '' }}" placeholder="email@exemplo.com">
                             </div>
                             <div>
                                 <label class="form-label font-bold text-blue-900 uppercase tracking-wide">Telefone</label>
-                                <input type="tel" class="form-input text-gray-500 font-normal bg-gray-50" value="{{ $profile->phone ?? '' }}" placeholder="(99) 99999-9999">
+                                <input type="tel" class="form-input text-gray-500 font-normal bg-gray-50" id="profile_phone" value="{{ $profile->phone ?? '' }}" placeholder="(99) 99999-9999">
                             </div>
                             <div>
                                 <label class="form-label font-bold text-blue-900 uppercase tracking-wide">Endereço</label>
-                                <input type="text" class="form-input text-gray-500 font-normal bg-gray-50" value="{{ $profile->address ?? '' }}" placeholder="Cidade, Estado">
+                                <input type="text" class="form-input text-gray-500 font-normal bg-gray-50" id="profile_address" value="{{ $profile->address ?? '' }}" placeholder="Cidade, Estado">
                             </div>
                         </div>
                         <div class="mt-6">
                             <label class="form-label font-bold text-blue-900 uppercase tracking-wide">Bio</label>
-                            <textarea class="form-input h-32 w-full text-gray-500 font-normal bg-gray-50" placeholder="Escreva uma breve bio...">{{ $profile->bio ?? '' }}</textarea>
+                            <textarea class="form-input h-32 w-full text-gray-500 font-normal bg-gray-50" id="profile_bio" placeholder="Escreva uma breve bio...">{{ $profile->bio ?? '' }}</textarea>
                         </div>
+                        <div class="mt-6 flex justify-end">
+                            <button type="submit" class="bg-blue-800 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition" id="btn-perfil-salvar">
+                                <i class="fas fa-save mr-2"></i> Salvar Perfil
+                            </button>
+                        </div>
+                        </form>
                     </div>
                 </div>
 
@@ -290,8 +294,10 @@
                 const label = document.querySelector(`label[for="${this.id}"]`);
                 if (this.checked) {
                     label.classList.add('bg-blue-800');
+                    label.classList.remove('bg-gray-300');
                 } else {
                     label.classList.remove('bg-blue-800');
+                    label.classList.add('bg-gray-300');
                 }
             });
         });
@@ -472,6 +478,35 @@
             document.getElementById('btn-social-atualizar').classList.add('hidden');
             document.getElementById('btn-social-salvar').classList.remove('hidden');
         }
+
+        document.getElementById('form-perfil').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch('/perfil', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    photo_url: document.getElementById('profile_photo_url').value,
+                    name: document.getElementById('profile_name').value,
+                    profession: document.getElementById('profile_profession').value,
+                    email: document.getElementById('profile_email').value,
+                    phone: document.getElementById('profile_phone').value,
+                    address: document.getElementById('profile_address').value,
+                    bio: document.getElementById('profile_bio').value
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Perfil atualizado com sucesso!');
+                    location.reload();
+                } else {
+                    alert('Erro ao atualizar perfil.');
+                }
+            });
+        });
     </script>
 </body>
 </html>

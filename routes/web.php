@@ -29,4 +29,7 @@ Route::delete('/social/{id}', [PortfolioController::class, 'destroySocial'])->na
 Route::get('/social/{id}', [PortfolioController::class, 'getSocial'])->name('social.get');
 Route::put('/social/{id}', [PortfolioController::class, 'updateSocial'])->name('social.update');
 
+// Rota para atualizar perfil
+Route::put('/perfil', [PortfolioController::class, 'updateProfile'])->name('perfil.update');
+
 require __DIR__.'/customer.php';

@@ -167,23 +167,7 @@
                         <h3 class="text-lg font-semibold mb-6">Seus Projetos</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             @forelse($projetos as $projeto)
-                                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition group cursor-pointer" onclick="carregarProjeto({{ $projeto->id }})">
-                                    <img src="{{ $projeto->image_url }}" alt="{{ $projeto->title }}" class="w-full h-48 object-cover">
-                                    <div class="p-4">
-                                        <h4 class="font-semibold">{{ $projeto->title }}</h4>
-                                        <p class="text-sm text-gray-600 mb-2">{{ $projeto->category }}</p>
-                                        <p class="text-sm text-gray-500">Publicado: {{ $projeto->published_at ? \Carbon\Carbon::parse($projeto->published_at)->format('d/m/Y') : '' }}</p>
-                                        <div class="mt-3 flex justify-between items-center">
-                                            <span class="text-sm text-blue-600">{{ $projeto->comments_count ?? 0 }} Comentários</span>
-                                            @if($projeto->is_featured)
-                                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Destaque</span>
-                                            @endif
-                                            <button class="ml-2 text-red-600 hover:text-red-800" onclick="event.stopPropagation(); deletarProjeto({{ $projeto->id }})">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('admin.partials.project', ['projeto' => $projeto])
                             @empty
                                 <div class="col-span-3 text-center text-gray-500">Nenhum projeto cadastrado.</div>
                             @endforelse
@@ -237,16 +221,7 @@
                         <h3 class="text-lg font-semibold mb-6">Suas Redes Sociais</h3>
                         <div class="space-y-4">
                             @forelse($links as $link)
-                                <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between cursor-pointer" onclick="carregarSocial({{ $link->id }})">
-                                    <div class="flex items-center">
-                                        @php $nomeSocial = \App\Helpers\SocialHelper::get($link->platform); @endphp
-                                        <span class="font-bold text-blue-900 mr-2">{{ $nomeSocial }}</span>
-                                        <span class="text-gray-600">{{ $link->url }}</span>
-                                    </div>
-                                    <button class="text-red-600 hover:text-red-800 ml-4" onclick="event.stopPropagation(); deletarSocial({{ $link->id }})">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
+                                @include('admin.partials.social-link', ['link' => $link])
                             @empty
                                 <div class="text-center text-gray-500">Nenhum link cadastrado.</div>
                             @endforelse

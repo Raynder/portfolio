@@ -383,41 +383,6 @@
             </div>
         </div>
     </footer>
-    
-
-<div class="modal fade" id="cadastroModal" tabindex="-1" aria-labelledby="cadastroModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header border-0">
-        <h1 class="modal-title fs-4" id="cadastroModalLabel">Crie sua Conta</h1>
-      </div>
-      <div class="modal-body">
-        <p class="subtitle">Comece a construir seu portfólio profissional em minutos!</p>
-        <form action="{{ route('portfolio.store') }}" method="POST">
-            @csrf
-            <div class="mb-3">
-                <label for="nome" class="form-label">Nome Completo</label>
-                <input type="text" class="form-control" id="nome" name="nome" placeholder="Seu nome" required value="{{ old('nome') }}">
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">E-mail</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="seu.email@exemplo.com" required value="{{ old('email') }}">
-            </div>
-            <div class="mb-3">
-                <label for="dominio" class="form-label">Domínio do Portfólio</label>
-                <div class="domain-prefix">
-                    <input type="text" id="dominio" name="dominio" placeholder="seu-nome-incrivel" required value="{{ old('dominio') }}">
-                    <span>.meuportfolio.com</span>
-                </div>
-                <small class="help-text">Este será o endereço do seu portfólio (ex: seu-nome-incrivel.meuportfolio.com)</small>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Criar Conta</button>
-        </form>
-        <p class="login-prompt">Já tem uma conta? <a href="#" class="login-link">Faça login aqui</a></p>
-      </div>
-    </div>
-  </div>
-</div>
 
     
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

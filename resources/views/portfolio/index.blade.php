@@ -86,19 +86,7 @@
             <!-- Social Icons -->
             <div class="flex space-x-3 mb-8">
                 @foreach($links as $link)
-                    <a href="{{ $link->url }}" target="_blank" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition">
-                        @if(strtolower($link->platform) === 't')
-                            <i class="fab fa-twitter"></i>
-                        @elseif(strtolower($link->platform) === 'f')
-                            <i class="fab fa-facebook-f"></i>
-                        @elseif(strtolower($link->platform) === 'l')
-                            <i class="fab fa-linkedin-in"></i>
-                        @elseif(strtolower($link->platform) === 'i')
-                            <i class="fab fa-instagram"></i>
-                        @else
-                            <i class="fas fa-link"></i>
-                        @endif
-                    </a>
+                    @include('portfolio.partials.social-link', ['link' => $link])
                 @endforeach
             </div>
             
@@ -237,31 +225,18 @@
                 <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-8 text-center">Ultimos Publicados</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @forelse($projetos as $projeto)
-                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-                            <img src="{{ $projeto->image_url ?? 'https://via.placeholder.com/400x200' }}" 
-                                 alt="{{ $projeto->title }}" class="w-full h-48 object-cover">
-                            <div class="p-6">
-                                <h3 class="text-xl font-bold text-blue-900 mb-2">{{ $projeto->title }}</h3>
-                                <div class="flex items-center text-gray-500 mb-4">
-                                    <i class="fas fa-tag mr-2"></i> {{ $projeto->category ?? 'Categoria' }}
-                                </div>
-                                <p class="text-gray-600 mb-4">
-                                    {{ $projeto->description }}
-                                </p>
-                                <button class="text-blue-900 font-medium hover:text-blue-700 transition">
-                                    View Details <i class="fas fa-arrow-right ml-1"></i>
-                                </button>
-                            </div>
-                        </div>
+                        @include('portfolio.partials.project', ['projeto' => $projeto])
                     @empty
                         <div class="col-span-3 text-center text-gray-500">Nenhum projeto cadastrado.</div>
                     @endforelse
                 </div>
+                {{-- 
                 <div class="text-center mt-10">
                     <button class="border-2 border-blue-900 text-blue-900 px-6 py-2 rounded font-medium hover:bg-blue-900 hover:text-white transition">
                         View All Projects
                     </button>
                 </div>
+                --}}
             </div>
             
             <!-- Footer -->

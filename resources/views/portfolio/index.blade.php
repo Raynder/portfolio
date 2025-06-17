@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kate Glover | Freelance Portfolio</title>
+    <title> {{ $profile?->name ?? 'Portfolio' }} | {{ $profile?->profession ?? '' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -87,13 +87,13 @@
             <div class="flex space-x-3 mb-8">
                 @foreach($links as $link)
                     <a href="{{ $link->url }}" target="_blank" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition">
-                        @if(str_contains($link->platform, 'twitter'))
+                        @if(strtolower($link->platform) === 't')
                             <i class="fab fa-twitter"></i>
-                        @elseif(str_contains($link->platform, 'facebook'))
+                        @elseif(strtolower($link->platform) === 'f')
                             <i class="fab fa-facebook-f"></i>
-                        @elseif(str_contains($link->platform, 'linkedin'))
+                        @elseif(strtolower($link->platform) === 'l')
                             <i class="fab fa-linkedin-in"></i>
-                        @elseif(str_contains($link->platform, 'instagram'))
+                        @elseif(strtolower($link->platform) === 'i')
                             <i class="fab fa-instagram"></i>
                         @else
                             <i class="fas fa-link"></i>
@@ -109,7 +109,7 @@
             
             <!-- Copyright -->
             <p class="text-gray-500 text-sm mt-auto">
-                &copy; 2023 Kate Glover. All rights reserved.
+                &copy; {{ date('Y') }} Raynder Cardoso
             </p>
         </div>
         
@@ -265,33 +265,33 @@
                 <div class="container mx-auto">
                     <div class="flex flex-col md:flex-row justify-between">
                         <div class="mb-6 md:mb-0">
-                            <h3 class="text-xl font-bold mb-4">Kate Glover</h3>
+                            <h3 class="text-xl font-bold mb-4">{{ $profile->name }}</h3>
                             <p class="text-gray-300 max-w-md">
-                                Professional freelance web designer and developer creating modern, responsive websites and applications.
+                                {{ $profile->bio ?? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' }}
                             </p>
                         </div>
                         
                         <div class="mb-6 md:mb-0">
-                            <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                            <h3 class="text-xl font-bold mb-4">Links Úteis</h3>
                             <ul class="space-y-2">
-                                <li><a href="#" class="text-gray-300 hover:text-white transition">Home</a></li>
-                                <li><a href="#" class="text-gray-300 hover:text-white transition">About</a></li>
-                                <li><a href="#" class="text-gray-300 hover:text-white transition">Portfolio</a></li>
-                                <li><a href="#" class="text-gray-300 hover:text-white transition">Contact</a></li>
+                                <li><a href="#" class="text-gray-300 hover:text-white transition">Inicio</a></li>
+                                <li><a href="#" class="text-gray-300 hover:text-white transition">Sobre</a></li>
+                                <li><a href="#" class="text-gray-300 hover:text-white transition">Contato</a></li>
                             </ul>
                         </div>
                         
                         <div>
-                            <h3 class="text-xl font-bold mb-4">Get In Touch</h3>
+                            <h3 class="text-xl font-bold mb-4">Entre em Contato</h3>
                             <ul class="space-y-2">
                                 <li class="flex items-center">
-                                    <i class="fas fa-envelope mr-2"></i> kate@example.com
+                                    <i class="fas fa-envelope mr-2"></i> {{ $profile->email ?? '' }}
                                 </li>
                                 <li class="flex items-center">
-                                    <i class="fas fa-phone mr-2"></i> +1 (555) 123-4567
+                                    <i class="fas fa-phone mr-2"></i>  {{ $profile->phone ?? '' }}
                                 </li>
                                 <li class="flex items-center">
-                                    <i class="fas fa-map-marker-alt mr-2"></i> New York, USA
+                                    <i class="fas fa-map-marker-alt mr-2"></i> 
+                                    {{ $profile->address ?? 'Endereço não disponível' }}
                                 </li>
                             </ul>
                         </div>
@@ -299,12 +299,9 @@
                     
                     <div class="border-t border-blue-800 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
                         <p class="text-gray-300 mb-4 md:mb-0">
-                            &copy; 2023 Kate Glover. All rights reserved.
+                            &copy; {{ date('Y') }} Raynder Cardoso, Todos os direitos reservados.
                         </p>
                         <div class="flex space-x-4">
-                            <a href="#" class="text-gray-300 hover:text-white transition">
-                                <i class="fab fa-twitter"></i>
-                            </a>
                             <a href="#" class="text-gray-300 hover:text-white transition">
                                 <i class="fab fa-facebook-f"></i>
                             </a>

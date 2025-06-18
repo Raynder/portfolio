@@ -52,7 +52,7 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         $dominio = $request->dominio;
-        $url = request()->getScheme() . '://' . $dominio . '.' . request()->getHost();
+        $url = request()->getScheme() . '://' . $dominio . '.' . request()->getHost() . '/admin';
         return redirect($url);
     }
 }

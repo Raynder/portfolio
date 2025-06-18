@@ -38,5 +38,6 @@ Route::domain('hzj4bn5k.srv-108-181-92-69.webserverhost.top')->group(function ()
 Route::post('/portfolio', [PortfolioController::class, 'store'])->name('portfolio.store');
 
 // Rotas para manipulação de projetos
-
-require __DIR__.'/customer.php';
+Route::prefix('portfolio')->group(function(){
+    require __DIR__.'/customer.php';
+});

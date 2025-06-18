@@ -37,7 +37,7 @@
 <body class="font-sans bg-gray-50">
     <!-- Floating CTA Button -->
     <div class="fixed bottom-6 right-6 z-50">
-        <a href="" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded-full shadow-lg btn-hover flex items-center floating-btn">
+        <a href="{{ route('register') }}" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded-full shadow-lg btn-hover flex items-center floating-btn">
             <i class="fas fa-bullseye mr-2"></i> Comece agora
         </a>
     </div>
@@ -71,11 +71,11 @@
                     <p class="text-lg text-gray-600 mb-8">
                         Conquiste mais oportunidades, destaque-se da concorrência e mostre ao mundo o que só você sabe fazer — de forma simples, rápida e profissional.
                     </p>
-                    <div id="cta">
+                    <a href="{{ route('register') }}">
                         <button type="button" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-lg shadow-lg btn-hover inline-flex items-center" data-bs-toggle="modal" data-bs-target="#cadastroModal">
                             <i class="fas fa-bullseye mr-2"></i> Comece seu portfólio agora — é rápido, simples e acessível
                         </button>
-                    </div>
+                    </a>
                 </div>
                 <div class="md:w-1/2 flex justify-center fade-in">
                     <div class="relative">
@@ -286,7 +286,7 @@
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-2xl md:text-3xl font-bold mb-6">Enquanto você espera, outras pessoas já estão sendo encontradas online.</h2>
             <p class="text-xl mb-8">Não deixe passar mais oportunidades.</p>
-            <a href="#cta" class="bg-white text-blue-600 hover:bg-gray-100 font-bold py-4 px-8 rounded-lg shadow-lg btn-hover inline-flex items-center">
+            <a href="{{ route('register') }}" class="bg-white text-blue-600 hover:bg-gray-100 font-bold py-4 px-8 rounded-lg shadow-lg btn-hover inline-flex items-center">
                 <i class="fas fa-bullseye mr-2"></i> Criar meu portfólio agora
             </a>
         </div>
@@ -331,7 +331,7 @@
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Pronto para transformar sua carreira?</h2>
             <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">Crie seu portfólio profissional hoje mesmo e comece a receber mais oportunidades</p>
-            <a href="#cta" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-lg shadow-lg btn-hover inline-flex items-center" data-bs-toggle="modal" data-bs-target="#cadastroModal">
+            <a href="{{ route('register') }}" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-lg shadow-lg btn-hover inline-flex items-center" data-bs-toggle="modal" data-bs-target="#cadastroModal">
                 <i class="fas fa-bullseye mr-2"></i> Comece agora — é grátis para criar
             </a>
         </div>
